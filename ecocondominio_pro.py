@@ -6,30 +6,23 @@ EcoCondomínio Pro - Streamlit App (versão 3.1.1, revisada)
   "multiple selectbox elements with the same auto-generated ID".
 """
 
-import os
 import io
-import base64
-import json
+import logging
 import sqlite3
 import tempfile
-import hashlib
-import logging
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
 from datetime import date, datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
-
 import plotly.express as px
-import plotly.graph_objects as go
-
 import streamlit as st
 from fpdf import FPDF
 
 # ==============================
-# LOGGING AVANÇADO
+# LOGGING AVANÇADO(luciano)
 # ==============================
 logging.basicConfig(
     level=logging.INFO,
@@ -379,7 +372,6 @@ class EnterpriseReportGenerator:
 
     def generate_advanced_excel(self) -> bytes:
         from pandas import ExcelWriter
-        import xlsxwriter
         summary = self.calculate_comprehensive_summary()
         buf = io.BytesIO()
         with ExcelWriter(buf, engine="xlsxwriter") as writer:
