@@ -39,7 +39,7 @@
 - FPDF (fpdf2)
 - XlsxWriter
 - Kaleido
-
+- https://claude.ai/
 ---
 
 ## ✨ Funcionalidades
