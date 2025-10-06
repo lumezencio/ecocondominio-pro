@@ -1,105 +1,90 @@
-# EcoCondomínio Pro
+EcoCondomínio Pro
+EcoCondomínio Pro é uma plataforma orientada a dados para medir, auditar e otimizar a gestão de resíduos em condomínios. Transforma registros semanais de coleta em insights operacionais, impacto ambiental e economia, com dashboards executivos e relatórios premium (PDF/Excel) prontos para apresentações.
 
-**EcoCondomínio Pro** is a data-driven platform to **measure, audit, and optimize** waste management in condominiums. It turns weekly collection entries into **operational insights, environmental impact, and savings**, with **executive dashboards** and **premium reports (PDF/Excel)** ready for presentations.
+Stack: Python · Streamlit · Plotly · Pandas · SQLite · FPDF (fpdf2) · XlsxWriter · Kaleido
 
-> **Stack**: Python · Streamlit · Plotly · Pandas · SQLite · FPDF (fpdf2) · XlsxWriter · Kaleido
 
----
+Funcionalidades
 
-## Features
+Entrada inteligente de dados
 
-- **Smart data entry**
-  - Real-time validation (apartment format, limits, weights).
-  - Advanced filters by **apartment / block / week / period**.
-- **Executive Dashboard**
-  - **Sparklines** (Total, Recyclable, CO₂, Adherence).
-  - Weekly evolution (stacked area + **moving average**).
-  - Total × CO₂ (secondary axis), 100% composition per week.
-  - Treemap Block→Apartment, Pareto, Control Chart (X-bar), Heatmap, Bubble scatter.
-- **Enterprise Reports**
-  - **Premium PDF**: cover, executive cards, chart pages, zebra ranking table, insights, paginated footer (Unicode-ready).
-  - **Advanced Excel**: dashboard, apartment summary, raw data, time series analysis, rankings (with conditional formatting).
-- **Robust architecture**
-  - SQLite with indexes, constraints, and **audit triggers** (INSERT/UPDATE).
-  - **Automatic backups**, **smart cache** (TTL), and modern CSS.
+Validação em tempo real (formato de apartamento, limites, pesos).
+Filtros avançados por apartamento / bloco / semana / período.
 
----
 
-## Architecture
+Dashboard Executivo
 
-```
+Sparklines (Total, Reciclável, CO₂, Aderência).
+Evolução semanal (área empilhada + média móvel).
+Total × CO₂ (eixo secundário), composição 100% por semana.
+Treemap Bloco→Apartamento, Pareto, Gráfico de Controle (X-bar), Heatmap, Gráfico de bolhas.
+
+
+Relatórios Empresariais
+
+PDF Premium: capa, cartões executivos, páginas de gráficos, tabela de ranking zebrada, insights, rodapé paginado (compatível com Unicode).
+Excel Avançado: dashboard, resumo por apartamento, dados brutos, análise de série temporal, rankings (com formatação condicional).
+
+
+Arquitetura Robusta
+
+SQLite com índices, restrições e triggers de auditoria (INSERT/UPDATE).
+Backups automáticos, cache inteligente (TTL) e CSS moderno.
+
+
+
+
+Arquitetura
 ecocondominio-pro/
-├─ ecocondominio_pro.py           # Streamlit app
+├─ ecocondominio_pro.py           # Aplicação Streamlit
 ├─ data/
-│  ├─ ecocondominio.db            # SQLite DB (auto-created)
-│  ├─ backups/                    # Automatic backups (rotation)
-│  └─ exports/                    # Exported files (if applicable)
+│  ├─ ecocondominio.db            # Banco de dados SQLite (criado automaticamente)
+│  ├─ backups/                    # Backups automáticos (com rotação)
+│  └─ exports/                    # Arquivos exportados (se aplicável)
 ├─ assets/
-│  ├─ DejaVuSans.ttf              # (optional) Unicode font for PDF
-│  └─ DejaVuSans-Bold.ttf         # (optional) Unicode font for PDF
-└─ app.log                        # Application log
-```
+│  ├─ DejaVuSans.ttf              # (opcional) Fonte Unicode para PDF
+│  └─ DejaVuSans-Bold.ttf         # (opcional) Fonte Unicode para PDF
+└─ app.log                        # Log da aplicação
+Tabelas SQLite: measurements, settings, audit_log (com índices e triggers).
 
-SQLite tables: `measurements`, `settings`, `audit_log` (with indexes & triggers).
+Instalação
 
----
+Requer Python 3.10+
 
-## Installation
-
-> Requires **Python 3.10+**
-
-```bash
-python -m venv .venv
+bashpython -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux:
 # source .venv/bin/activate
-
 python -m pip install -U pip
 pip install -r requirements.txt
-```
+Se preferir sem requirements.txt:
+bashpip install streamlit pandas numpy plotly fpdf2 xlsxwriter kaleido pillow
 
-If you prefer without `requirements.txt`:
+Executar
+bashstreamlit run ecocondominio_pro.py
 
-```bash
-pip install streamlit pandas numpy plotly fpdf2 xlsxwriter kaleido pillow
-```
+A aplicação abre no seu navegador (veja a URL no terminal).
 
----
 
-## Run
+Exportar (PDF / Excel)
+Abra "Relatórios Empresariais" dentro da aplicação:
 
-```bash
-streamlit run ecocondominio_pro.py
-```
+Gerar PDF: relatório executivo premium.
+Gerar Excel: pasta de trabalho com múltiplas planilhas contendo resumo, dados brutos, análise temporal e rankings.
 
-> The app opens in your browser (see the terminal for the URL).
+Fontes Unicode (opcional) para acentos/símbolos perfeitos no PDF: coloque DejaVuSans.ttf e DejaVuSans-Bold.ttf na pasta assets/. Sem elas, a aplicação utiliza modo ASCII para evitar falhas.
 
----
+Solução de Problemas
 
-## Export (PDF / Excel)
+Gráficos não aparecem no PDF → pip install kaleido
+Caractere inválido no PDF ("•", "—") → adicione fontes Unicode (acima) ou use o fallback ASCII já implementado.
+"Not enough horizontal space…" → já tratado no layout (reset do cursor antes de cell(0, …) e multi_cell(0, …)). Se adicionar títulos/notas personalizadas muito longas, considere encurtá-las.
 
-Open **“Enterprise Reports”** inside the app:
-- **Generate PDF**: premium executive report.
-- **Generate Excel**: multi-sheet workbook with summary, raw data, time analysis, and rankings.
 
-**Unicode fonts (optional)** for perfect accents/symbols in the PDF: place `DejaVuSans.ttf` and `DejaVuSans-Bold.ttf` under `assets/`. Without them, the app falls back to ASCII-safe mode to avoid crashes.
-
----
-
-## Troubleshooting
-
-- **Charts don’t appear in PDF** → `pip install kaleido`
-- **Invalid character in PDF (“•”, “—”)** → add Unicode fonts (above) or rely on ASCII fallback already implemented.
-- **“Not enough horizontal space…”** → already handled in layout (cursor reset before `cell(0, …)` and `multi_cell(0, …)`). If you add very long custom titles/notes, consider shortening them.
-
----
-
-## Publish to GitHub (quick)
-
-git config user.name "Luciano Henrique Mezencio"
+Publicar no GitHub (rápido)
+bashgit config user.name "Luciano Henrique Mezencio"
 git config user.email "lucianomezencio@gmail.com"
 git config init.defaultBranch main
-
 git init
 git add .
 git commit -m "chore: initial project import"
@@ -107,4 +92,10 @@ git branch -M main
 git remote add origin https://github.com/mezen/ecocondominio-pro.git
 git push -u origin main
 
-```
+Licença
+Este projeto está sob licença própria. Consulte o arquivo LICENSE para mais detalhes.
+Autor
+Luciano Henrique Mezencio
+
+GitHub: @mezen
+Email: lucianomezencio@gmail.com
