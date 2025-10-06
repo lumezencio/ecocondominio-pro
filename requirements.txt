@@ -1,7 +1,0 @@
-streamlit>=1.36
-pandas>=2.2
-plotly>=5.22
-fpdf2>=2.7
-xlsxwriter>=3.2
-# opcional para exportar PNGs dos gráficos no PDF:
-kaleido>=0.2
